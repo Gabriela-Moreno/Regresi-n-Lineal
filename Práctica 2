@@ -1,0 +1,56 @@
+## TAREA 1  
+datos<-c(1,2,3,4,5,6,7,8,9,10,0,0,2,11,7,16,9,0,12,4,1.72,4.38,4.06,1.26,5.31,.57,3.37,3.44,.74,1.24,1.88,5.93,5.54,2.67,6.53,.74,4.94,4.89,.69,1.42)
+ma<- matrix(datos, ncol= 10, byrow = T)
+nomfila<-c("MOTOR", "EDAD", "LINEA DE BASE", "REFORMULADA")
+dimnames(ma)<- list(nomfila)
+ma
+
+EDAD <- c(0,0,2,11,7,16,9,0,12,4)
+LDB <- c(1.72,4.38,4.06,1.26,5.31,.57,3.37,3.44,.74,1.24)
+REF <- c(1.88,5.93,5.54,2.67,6.53,.74,4.94,4.89,.69,1.42)
+
+plot(EDAD,LDB)
+plot(EDAD,REF)
+
+## PRACTICA 2
+
+A <- c(132,129,120,113.2,105,92,84,83.2,88.4,59,80,81.5,71,69.2)
+B <- c(46,48,51,52.1,54,52,59,58.7,61.6,64,61.4,54.6,58.8,58)
+plot(A,B)
+        #mio
+##Suma_xi_al_cuadrado<-sum(A^2)
+#Suma_al_cuadrado<-sum(A)^2
+#Sxx<-Suma_xi_al_cuadrado- Suma_al_cuadrado/14
+       
+       #del maestro
+sxx = sum((A-mean(A))^2)
+sxy = sum ((A-mean(A))*(B-mean(B)))
+
+b1 = (sxy)/(sxx)          
+b0<- mean(B)-b1*mean(A) 
+b0~X
+#CON LA FUNCIÓN LM(Y~X)
+lm(B~A)
+
+#Con los datos anteriores calcular el valor de y cuando PRACTICA 3
+#x*=40
+
+y<-b0-b1*(70)
+plot(y,col="pink")
+y<-b0-b1*(40)
+plot(y,col="purple")
+y<-b0-b1*(55)
+plot(y,col="grey")
+
+require(ggplot2)
+#graficar los datos anteruires con ina recta, con ggplot2 y qplot(x,y...) 
+rr<-predict(nod1)
+qplot(B,A
+      geon=c("point"),
+      )
+
+#raya
+
+
+
+
