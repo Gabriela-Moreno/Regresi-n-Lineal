@@ -49,7 +49,55 @@ qplot(B,A
       geon=c("point"),
       )
 
-#raya
+
+
+                                #Practica Lunes 26 de agosto
+                                
+                                
+
+x<-c(125.3,98.2,201.4,147.3,145.9,124.7,112.2,120.2,161.2,178.9,159.5,145.8,75.1,151.4,144.2,125,198.8,132.5,159.6,110.7)
+y<-c(77.9,76.8,81.5,79.8,78.2,78.3,77.5,77.0,80.1,80.2,79.9,79,76.7,78.2,79.5,78.1,81.5,77,79,78.6)
+
+
+sxx = sum((x-mean(x))^2)
+sxy = sum ((x-mean(x))*(y-mean(y)))
+
+b1 = (sxy)/(sxx)          
+b0<- mean(y)-b1*mean(x) 
+b0~X
+
+#PARA LAS YS CON GORRITO
+
+Y1=b0+b1*(125.3)
+Y2=b0+b1*(98.2)
+Y3=b0+b1*(201.4)
+Y4=b0+b1*(147.3)
+
+
+#PARA EL RESIDUO 
+R1=-Y1+125.3
+R2= -Y2+76.8    #LOS RESIDUOS NEGATIVOS SON LOS QUE ESTAN POR DEBAJO DE LA RECTA 
+R3=-Y3+81.5
+
+
+
+##DECLARAR TODO EN VECTOR PARA NO HACER UNO POR UNO, aunque no agarra tantos decimales 
+
+Vector_Ys_Gorrito<-b0+b1*(x)
+Residuo<-y-Vector_Ys_Gorrito
+
+Vector_Ys_Gorrito
+Residuo
+
+
+#si queremos redondear para tener todo uniforme 
+
+round(Vector_Ys_Gorrito,2)
+
+require(ggplot2)
+plot(Residuo)
+
+
 
 
 
