@@ -97,18 +97,17 @@ round(Vector_Ys_Gorrito,2)
 #require(ggplot2)
 #plot(Residuo)
 
+
 ##Sacar la variacion estandar
 
-SSE=sum(y-(Vector_Ys_Gorrito))^2
-Desv_Est= SSE/(18)
+  SSE=sum((y-Vector_Ys_Gorrito)^2)
+  Desv_Est= SSE/(18)
 
 
 ##GRAFICAR Y 
+  
+require(ggplot2)
+plot(x,y)
 
-recta<-lm(y~x)
+recta<-lm(Vector_Ys_Gorrito~x)
 abline(recta)
-
-
-
-
-
