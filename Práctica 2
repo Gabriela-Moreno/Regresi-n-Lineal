@@ -111,3 +111,6 @@ plot(x,y)
 
 recta<-lm(Vector_Ys_Gorrito~x)
 abline(recta)
+
+
+##Los datos se ajustan a la recta
