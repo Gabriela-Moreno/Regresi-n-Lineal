@@ -365,17 +365,43 @@ yg<-(6.227686)+(0.061823)*(20)+(-0.038721)*(1)
 R<- sqrt(yg)
 
 
-                            ####PARA LOS IC
+                          
 
 ###PARA SACAR EL VALOR DE T
 
 qt(p=.95+.05/2,df=15,lower.tail = T)
+vat<-qt(p=.95+.05/2,df=15,lower.tail = T)
 
-###PARA SACAR LA DESV. EST.
+#Valor F= 456.3 (sale en el summary) con un p-value <.05
 
-sY<-0.0332
+            #El modelo es útil para explicar la variable dependiente
 
 
+
+                    ####PARA LOS IC
+#para el intervalo de confianza de B1
+
+          # 0.061823(+-) valor de t con alfa medios y 15 gl.*(Sb1)
+           ICI<- 0.061823+vat*(0.002099)
+ 
+            ICS<- 0.061823-vat*(0.002099)
+            
+            
+          #intervalo con confint
+            
+            confint(mod,'x1',level=.95)
+            
+  ######INTERVALO DE CONFIANZA PARA Y 
+            
+          predict(mod, newdata = data.frame(x1=20,x2=1,interval="confidence", level=.95)
+                        
+                        
+            
+            
+###Intervalo de prediccion de y 
+
+predict(mod, newdata = data.frame(x1=20,x2=1,interval="prediction",level=.95)
+        
 
 
 
