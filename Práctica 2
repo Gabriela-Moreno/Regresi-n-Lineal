@@ -346,6 +346,53 @@ summary(a)
 ####Calcular Y gorrito cuando X1=14    X2=6
  Y<- 84.81+0.1643*(X1)-79.667*(X2)
 
+################################# 29 octubre
+
+ejercicio experimento reaizado para conocer el impacto de las variables
+#x1= fuerza(gm)
+#x2=potencia(mw)
+#x3=temperatuca(c)
+#x4=tiempo(ms)
+#y=resistencia(gm)
+Find B0, B1, B2,B3,B4
+x1<-c(30,40,30,40,30,40,30,40,30,40,30,40,30,40,30,40,25,45,35,35,35,35,35,35,35,35,35,35,35,35)
+x2<-c(60,60,90,90,60,60,90,90,60,60,90,90,60,60,90,90,75,75,45,105,75,75,75,75,75,75,75,75,75,75)
+x3<-c(175,175,175,175,225,225,225,225,175,175,175,175,225,225,225,225,200,200,200,200,150,250,200,200,200,200,200,200,200,200)
+x4<-c(15,15,15,15,15,15,15,15,25,25,25,25,25,25,25,25,20,20,20,20,20,20,10,30,20,20,20,20,20,20)
+y<-c(26.2,26.3,39.8,39.7,38.6,35.5,48.8,37.8,26.6,23.4,38.6,52.1,39.5,32.3,43,56,35.2,46.9,22.7,58.7,34.5,44,35.7,41.8,36.5,37.6,40.3,46,27.8,40.3)
+
+
+mod=(lm(y~x1+x2+x3+x4))
+summary(mod)
+B0=-37.47
+B1=0.2116
+B2=0.4983
+B3=0.12967
+B4=0.2583
+
+#Interpretación x3
+#Se estima que .1297gm, es el cambio PROMEDIO de resistencia asociado a un aumento en el grado de la temperatura cuando las otras 3 vi permanecen constantes
+
+#Realizar una estimacion puntual de la resistencia cuando se tiene una fuerza de 35, potencia de 75, temp de 200 y tiempo de 20
+
+ygor=B0+B1*35+B2*75+B3*200+B4*20
+ygor
+
+names(mod)  #elementos que tiene el modelo
+mod$fitted.values #valores/ recta ajustada con minimos cuadrados
+
+#identicos
+yy=mod$fitted.values
+View(yy) 
+
+ypro=predict(mod)
+View(ypro)
+
+
+#p-value x1,x4 >.05; no tiene una relacion importante con nuestra variable indeppendiente 
+#estadistico F :: HO:B0=B1=B2=B3=B4=0
+#LO PODEMOS DEJAR PERO NO INTERPRETAR X1 X4
+plot(x1,y)
 
 ############################# 30 octubre ####################
 
