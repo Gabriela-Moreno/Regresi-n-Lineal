@@ -485,3 +485,57 @@ qf(0.05,6,7,lower.tail = F)
 F6,7=3.87
 
 
+                             ############## 6 noviembre 
+                             
+y<-c(3.11,3.26,3.89,10.25,3.11,13.48,3.94,3.53,3.36,6.49,2.72,12.48,2.82,5.19,8.04)
+x1<-c(2.04,2.04,3.06,3.06,4.08,4.08,2.06,2.06,3.08,3.08,4.11,4.11,2.01,3.02,4.03)
+x2<-c(3.55,6.07,3.55,6.07,3.55,6.16,3.62,6.16,3.62,5.89,3.62,5.89,6.18,6.18,6.18)
+
+
+x3 = (x1)*(x2)
+
+mod<-lm(y~x1+x2+x3)
+summary(mod)
+predict(mod)
+
+anova(mod)
+SSEK=32.627
+
+
+
+##### 
+
+
+modb<-lm(y~x1+x2)
+summary(modb)
+anova(modb)
+
+SSEl= 79.054
+
+## ssei > ssek por lo tanto el completo da un ajuste mejor que el mod. reducido 
+
+                  ##### para sacar las f (estadistico de prueba)
+
+f1=((79.054-32.627)/((32.627)/(15-4)))
+
+qf(0.05,1,11,lower.tail = F)
+
+
+######## El estadistico calculado es mayor que el de tablas 
+#se debe mantener 
+# Ho: B3=0
+#H1: B3 no es cero 
+
+
+
+###########entonces: 
+
+
+      #f=15.65
+      #F(1,11,95)=4.84
+#con el 95% de confianza aceptamos que la variable 
+#independiente x3 tiene una relacion util para nuestro modelo
+
+
+predict(object=mod, newdata = data.frame(x1=3,x2=6,x3=18),interval="confidence", level=.95)
+
