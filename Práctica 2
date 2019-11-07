@@ -487,55 +487,92 @@ F6,7=3.87
 
                              ############## 6 noviembre 
                              
-y<-c(3.11,3.26,3.89,10.25,3.11,13.48,3.94,3.53,3.36,6.49,2.72,12.48,2.82,5.19,8.04)
-x1<-c(2.04,2.04,3.06,3.06,4.08,4.08,2.06,2.06,3.08,3.08,4.11,4.11,2.01,3.02,4.03)
-x2<-c(3.55,6.07,3.55,6.07,3.55,6.16,3.62,6.16,3.62,5.89,3.62,5.89,6.18,6.18,6.18)
+y <- c(3.11, 3.26, 3.89, 10.25, 3.11, 13.48, 3.94, 3.53, 3.36, 6.49, 2.72, 12.48, 2.82, 5.19, 8.04) 
+x1 <- c(2.04, 2.04, 3.06, 3.06, 4.08, 4.08, 2.06, 2.06, 3.08, 3.08, 4.11, 4.11, 2.01, 3.02, 4.03) 
+x2<- c(3.55, 6.07, 3.55, 6.07, 3.55, 6.16, 3.62, 6.16, 3.62, 5.89, 3.62, 5.89, 6.18, 6.18,6.18 ) 
+x3= x1*x2 
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("gridExtra")
+library(ggplot2)
+library(gridExtra)
+library(dplyr)
+##MODELO AJUSTADO con v.i x1, x2, x3=x1.x2 
+##1. ¿Se debe mantener la v.i. de interaccion en el modelo? Hacer una p.h con .05 significancia 
+##2. la desv. estandar estimada y^ cuando x1=3 y x2=6 es SYgorrito=.555. Calcule e interprete el I.C con un nivel de confianza de 95% 
+mod <- lm(y~x1+x2+x3) 
+modreducido <- lm(y~x1+x2) 
+summary(mod) 
+summary(modreducido) 
+Ygorrito=17.2787 + (-6.3678)*x1 + (-3.6584)*x2 + 1.7067*x3 
+Ygorrito 
+anova(mod) 
+anova(modreducido) 
+f = ((79.054 - 32.627)/(4-3))/(32.627/(15-(3+1))) 
+qf(.05, 1, 11, lower.tail = F) ##H0=B3=0 -> se rechaza h0 ##Ha=B3 diferente a 0
+
+##############################2#################### 
+predict(object=mod, newdata= data.frame(x1=3,x2=6,x3=18), interval="confidence", level=0.95)
+predict(object=mod, newdata= data.frame(x1=3,x2=6,x3=18), interval="predict", level=0.95)
 
 
-x3 = (x1)*(x2)
-
-mod<-lm(y~x1+x2+x3)
-summary(mod)
-predict(mod)
-
-anova(mod)
-SSEK=32.627
+###############################################################continuacion 7 noviembre
 
 
+############NORMALIDAD##################
+qqnorm(mod$residuals)
+qqnorm(modreducido$residuals)
+shapiro.test(mod$residuals)
+#HIPOTESIS
+#H0: El modelo sigue una distribución normal
+#H1: El modelo no sigue una distribucion normal
 
-##### 
-
-
-modb<-lm(y~x1+x2)
-summary(modb)
-anova(modb)
-
-SSEl= 79.054
-
-## ssei > ssek por lo tanto el completo da un ajuste mejor que el mod. reducido 
-
-                  ##### para sacar las f (estadistico de prueba)
-
-f1=((79.054-32.627)/((32.627)/(15-4)))
-
-qf(0.05,1,11,lower.tail = F)
+#El nivel de significancia es de 0.05. Alfa=0.05
+#Criterio de Decisión
+#Si P < Alfa Se rechaza Ho
+#Si p >= Alfa No se rechaza Ho
 
 
-######## El estadistico calculado es mayor que el de tablas 
-#se debe mantener 
-# Ho: B3=0
-#H1: B3 no es cero 
+# El valor del p-value es mayor a 0.05 ... por lo tanto no rechazamos H0
+#Cumple con el supuesto de normalidad
+##Shapiro-Wilk normality test
+#data:  mod$residuals
+#W = 0.93719, p-value = 0.3483
 
+##############LINEALIDAD################
+plot1 <- ggplot(data = datos, aes(x1, mod$residuals)) +
+  geom_point() + geom_smooth(color = "firebrick") + geom_hline(yintercept = 0) +
+  theme_bw()
+plot2 <- ggplot(data = datos, aes(x2, modelo$residuals)) +
+  geom_point() + geom_smooth(color = "firebrick") + geom_hline(yintercept = 0) +
+  theme_bw()
+plot3 <- ggplot(data = datos, aes(x3, modelo$residuals)) +
+  geom_point() + geom_smooth(color = "firebrick") + geom_hline(yintercept = 0) +
+  theme_bw()
+grid.arrange(plot1, plot2, plot3)
 
+############MULTICOLINEALIDAD###########
+#Si el coeficiente de determinación R^2 es alto pero ninguno de los predictores resulta significativo, hay indicios de colinialidad.
+#olerancia (TOL) y Factor de Inflación de la Varianza (VIF)
+vif = 1 / (1-0.8252) 
+##Si VIF = 1 entonces ausencia total de multicolinealidad; 
+##1 < VIF < 5: La regresión puede verse afectada por cierta colinialidad.
+##5 < VIF < 10: Causa de preocupación
+##El termino tolerancia es 1/VIF por lo que los límites recomendables están entre 1 y 0.1.
+tol = 1/vif
+##En caso de encontrar colinialidad entre predictores, hay dos posibles soluciones. La primera es excluir uno de los predictores problemáticos intentando conservar el que, a juicio del investigador, está influyendo realmente en la variable respuesta. Esta medida no suele tener mucho impacto en el modelo en cuanto a su capacidad predictiva ya que, al existir colinialidad, la información que aporta uno de los predictores es redundante en presencia del otro. La segunda opción consiste en combinar las variables colineales en un único predictor, aunque con el riesgo de perder su interpretación.
+##no multicolinealidad
+library(corrplot)
+corrplot(cor(dplyr::select(datos, x1, x2,x3)),
+         method = "number", tl.col = "black")
+library(car)
+vif(mod) ##No hay predictores que muestren una correlación lineal muy alta ni inflación de varianza.
 
-###########entonces: 
-
-
-      #f=15.65
-      #F(1,11,95)=4.84
-#con el 95% de confianza aceptamos que la variable 
-#independiente x3 tiene una relacion util para nuestro modelo
-
-
-predict(object=mod, newdata = data.frame(x1=3,x2=6,x3=18),interval="confidence", level=.95)
-
+#########HOMOCEDASTICIDAD############
+ggplot(data = datos, aes(mod$fitted.values, mod$residuals)) +
+  geom_point() +
+  geom_smooth(color = "firebrick", se = FALSE) +
+  geom_hline(yintercept = 0) +
+  theme_bw()
+library(lmtest)
+bptest(modelo) ###con esto se comprueba si hay falta de homocedasticidad
